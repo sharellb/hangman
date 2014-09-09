@@ -1,12 +1,13 @@
+require 'yaml'
+
 class Hangman
-	attr_reader :game_over
 	
 	def initialize
 		@game_over = false
 		@body_parts = ["Right arm", "Left arm", "Right leg", "Left leg", "Head", "Torso"]
 		select_word
 		welcome
-		until game_over == true
+		until @game_over == true
 			guess
 		end
 		end_game
@@ -35,10 +36,13 @@ class Hangman
 	def guess
 		puts @hidden_word
 		puts "You still have the following body parts: #{@body_parts}"
-		puts "Guess a letter!"
+		puts "Guess a letter! or type 'save' to save the game."
 		letter_guess = gets.chomp.downcase
 
-		if !letter_guess.match(/[[:alpha:]]/)
+		if letter_guess == 'save'
+			save
+			exit(0)
+		elsif !letter_guess.match(/[[:alpha:]]/)
 			puts "That is not a letter. Try again!"
 			guess
 		elsif letter_guess.length != 1
@@ -75,6 +79,20 @@ class Hangman
 	def end_game
 		puts "The word was #{@random_word}"
 		exit(0)
+	end
+
+	def save
+		Dir.mkdir('games') unless Dir.exist? 'games'
+		name = 'games/saved.yaml'
+		File.open(name, 'w') do |file|
+			file.puts YAML.dump(self)
+		end
+		puts "Game has been saved!"
+	end
+
+	def load
+		content = File.open('games/saved.yaml', 'r') {|file| file.read }
+		YAML.load(content)
 	end
 end
 
