@@ -3,6 +3,7 @@ class Hangman
 	
 	def initialize
 		@game_over = false
+		@body_parts = ["Right arm", "Left arm", "Right leg", "Left leg", "Head", "Torso"]
 		select_word
 		welcome
 		until game_over == true
@@ -33,6 +34,7 @@ class Hangman
 
 	def guess
 		puts @hidden_word
+		puts "You still have the following body parts: #{@body_parts}"
 		puts "Guess a letter!"
 		letter_guess = gets.chomp.downcase
 
@@ -44,9 +46,11 @@ class Hangman
 			guess
 		else
 			position = 0
+			safe = false
 			@random_word.split("").each do |x|
 				if letter_guess == x
 					@hidden_word[position] = letter_guess
+					safe = true
 				end
 				position = position + 1
 			end
@@ -54,11 +58,23 @@ class Hangman
 
 		if @random_word == @hidden_word
 			@game_over = true
+			puts "You won!"
+		end
+
+		if safe == false
+			body_part = @body_parts.sample
+			puts "That letter is not in the word. Sorry you lost your #{body_part}!"
+			@body_parts.delete(body_part)
+		end
+
+		if @body_parts.empty?
+			@game_over = true
+			puts "You lost!"
 		end
 	end
 	def end_game
 		puts "The word was #{@random_word}"
-		puts "You won!"
+		exit(0)
 	end
 end
 
