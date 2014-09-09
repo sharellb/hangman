@@ -34,23 +34,31 @@ class Hangman
 	def guess
 		puts @hidden_word
 		puts "Guess a letter!"
-		letter_guess = gets.chomp
+		letter_guess = gets.chomp.downcase
 
-		position = 0
-		@random_word.split("").each do |x|
-			if letter_guess == x
-				@hidden_word[position] = letter_guess
+		if !letter_guess.match(/[[:alpha:]]/)
+			puts "That is not a letter. Try again!"
+			guess
+		elsif letter_guess.length != 1
+			puts "You must guess one letter. Try again!"
+			guess
+		else
+			position = 0
+			@random_word.split("").each do |x|
+				if letter_guess == x
+					@hidden_word[position] = letter_guess
+				end
+				position = position + 1
 			end
-			position = position + 1
 		end
 
 		if @random_word == @hidden_word
 			@game_over = true
-			puts "YAY"
 		end
 	end
 	def end_game
-		puts "You won"
+		puts "The word was #{@random_word}"
+		puts "You won!"
 	end
 end
 
