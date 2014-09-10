@@ -7,6 +7,9 @@ class Hangman
 		@body_parts = ["Right arm", "Left arm", "Right leg", "Left leg", "Head", "Torso"]
 		select_word
 		welcome
+	end
+
+	def play
 		until @game_over == true
 			guess
 		end
@@ -24,7 +27,6 @@ class Hangman
 		end
 
 		@random_word = words.sample.downcase
-		puts @random_word
 		@hidden_word = "-" * @random_word.length
 		
 	end
@@ -80,20 +82,32 @@ class Hangman
 		puts "The word was #{@random_word}"
 		exit(0)
 	end
+end
 
-	def save
-		Dir.mkdir('games') unless Dir.exist? 'games'
-		name = 'games/saved.yaml'
-		File.open(name, 'w') do |file|
-			file.puts YAML.dump(self)
-		end
-		puts "Game has been saved!"
+def save
+	Dir.mkdir('games') unless Dir.exist? 'games'
+	name = 'games/saved.yaml'
+	File.open(name, 'w') do |file|
+		file.puts YAML.dump(self)
 	end
+	puts "Game has been saved!"
+end
 
-	def load
+def load
+	puts "Do you want to load an old game? (y/n)"
+	old_game = gets.chomp
+	if old_game == "y"
 		content = File.open('games/saved.yaml', 'r') {|file| file.read }
-		YAML.load(content)
+		game = YAML.load(content) 
+		game.play
+	elsif old_game == "n"
+		game = Hangman.new
+		game.play
+	else
+		puts "That's not an option. Try again!"
+		load
 	end
 end
 
-Hangman.new
+load
+
