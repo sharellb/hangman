@@ -14,6 +14,7 @@ class Hangman
 			guess
 		end
 		puts "The word was #{@random_word}"
+		play_again
 	end
 
 	def select_word #open dictionary file and store all words between 5 and 12 characters in the words array
@@ -77,6 +78,20 @@ class Hangman
 		if @body_parts.empty? #end the game if there are no more body parts
 			@game_over = true
 			puts "You lost!"
+		end
+	end
+
+	def play_again
+		puts "Do you want to play again (y/n)?"
+		play_response = gets.chomp
+		if play_response == "y"
+			game = Hangman.new
+			game.play
+		elsif play_response == "n"
+			puts "Thanks for playing!"
+		else
+			puts "You have to put y or n"
+			play_again
 		end
 	end
 end
