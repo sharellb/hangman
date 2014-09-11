@@ -18,7 +18,7 @@ class Hangman
 
 	def select_word #open dictionary file and store all words between 5 and 12 characters in the words array
 		words = []
-		lines = File.readlines "5desk.txt"
+		lines = File.readlines "dictionary.txt"
 		lines.each do |line|
 			word = line.chomp
 			if word.length > 5 && word.length < 12
