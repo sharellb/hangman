@@ -1,8 +1,13 @@
 --- !ruby/object:Hangman
 game_over: false
 body_parts:
-- Left arm
-- Left leg
-- Head
-random_word: immanency
-hidden_word: "---a-----"
+- right arm
+- right leg
+- left leg
+- head
+- torso
+previous_guesses:
+- s
+- l
+random_word: admiralty
+hidden_word: "------l--"
